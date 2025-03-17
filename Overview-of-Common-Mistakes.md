@@ -174,7 +174,26 @@ df = df - 100
 #### Ручной grid-search
 Лучше использовать библиотеки для подбора гиперпараметров (optuna, sklearn GridSearchCV)
 ```python
-# TODO: write grid search code example
+import optuna
+# objective - любая функция. В нашем случае - точность модели на ВАЛИДАЦИОННОМ наборе
+# На тестовом нельзя - будет переобучение на тестовый набор
+def objective(trial):
+    # Любые параметры модели - как численные, так и категориальные
+	lr = trial.suggest_float("lr", 1e-5, 1e-1)
+    activation=trial.suggest_categorical(
+        "activation", ["relu", "linear"]
+        )
+    # Модель вставляйте свою - тут чисто для примера
+    model.fit(X_train, y_train, lr, activation)
+    # Точность модели на ВАЛИДАЦИОННОМ наборе
+    accuracy = model.evaluate(X_val, y_val, lr, activation)
+	return accuracy
+
+study = optuna.create_study()
+study.optimize(objective, n_trials=1000, timeout=600)
+best = study.best_params
+# Две звездочки - распаковка словаря
+model.fit(X_train, y_train, **best)
 ```
 
 #### Непредвиденные результаты
