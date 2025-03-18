@@ -8,7 +8,7 @@
 # Плохо
 pd.read_csv("C:/Users/my_project/data/file.csv")
 
-# Лучше, но в .py файле будет зависеть от точки входа (может сломаться)
+# Хорошо, но в .py файле будет зависеть от точки входа (может сломаться)
 pd.read_csv("../file.csv")
 
 # Идеально
@@ -148,14 +148,14 @@ for element in my_list:
 
 # Если нужен порядковый номер
 for index, element in enumerate(my_list):
-    print(i, element)
+    print(index, element)
 ```
 
 Использование f-string и list comprehension
 ```python
 # Пример
 fruits = ["apple", "banana", "cherry", "mango"]
-no_long_names = [f'tasty {i}' for i in fruits if len(i) > 5]
+no_long_names = [f'tasty {fruit}' for fruit in fruits if len(fruit) > 5]
 
 # Еще пример
 width, length = 10, 12
@@ -262,9 +262,9 @@ int, float, str, tuple, complex, frozenset
 ```python
 # int - неизменяемый
 x = 10
-def foo(x):
-    x += 5 # создается новая локальная переменная
-    print(x)
+def foo(y):
+    y += 5 # создается новая локальная переменная
+    print(y)
 
 foo(x) # Выводит 15
 print(x) # Выводит 10
@@ -272,9 +272,9 @@ print(x) # Выводит 10
 ```python
 # list - изменяемый
 l = [10]
-def bar(l):
-    l.append(15) # изменяется глобальная переменная
-    print(l)
+def bar(z):
+    z.append(15) # изменяется глобальная переменная
+    print(z)
 
 bar(l) # Выводит [10, 15]
 print(l) # Выводит [10, 15]
