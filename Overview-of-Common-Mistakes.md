@@ -7,16 +7,17 @@
 ```python
 # Плохо
 pd.read_csv("C:/Users/my_project/data/file.csv")
-
+```
+```python
 # Хорошо, но в .py файле будет зависеть от точки входа (может сломаться)
 pd.read_csv("../file.csv")
-
+```
+```python
 # Идеально
 from settings import data_path
 pd.read_csv(data_path)
-```
-```python
-# settings.py
+
+# Код ниже находится в файле settings.py
 from pathlib import Path
 project_path = Path(__file__).resolve().parents[1]
 data_path = project_path / "data"
@@ -32,7 +33,8 @@ with open('results.txt', 'a') as f:
         f.write(str(r2) + '\t' + str(mae) + '\n')
     f.write('\n')
 # А теперь руками копируем это в excel
-
+```
+```python
 # Лучше
 N_REPEATS = 3
 accuracy = list()
@@ -67,7 +69,8 @@ tagret = 'Cu'
 
 y = df[target]
 model.fit(X, y)
-
+```
+```python
 # Хорошо
 targets = ['pH', 'Cu', 'Ni']
 for target in targets:
@@ -123,14 +126,15 @@ conda create --name my_project python=3.12
 conda activate my_project
 conda install pandas numpy plotly
 ```
-Неиспользование requirements.txt  
+Неиспользование requirements.txt или environment.yml   
 Альтернатива - poetry (сложнее, но больше функционал)
 ```bash
 pip freeze > requirements.txt
-
 pip install -r requirements.txt
+
 # Или через conda
-conda install --file requirements.txt
+conda env export -n my_project --from-history --file environment.yml
+conda env create -n my_project -f environment.yml
 ```
 
 ### Экономия времени
@@ -141,11 +145,13 @@ conda install --file requirements.txt
 # Плохо
 for i in range(len(my_list)):
     print(my_list[i])
-
+```
+```python
 # Хорошо
 for element in my_list:
     print(element)
-
+```
+```python
 # Если нужен порядковый номер
 for index, element in enumerate(my_list):
     print(index, element)
@@ -166,8 +172,9 @@ my_string = f'A {width} by {length} room has an area of {width * length}.'
 ```python
 # Не берем первую колонку - там дата
 df.iloc[:, 1:] = df.iloc[:, 1:] - 100
-
-# Не нужны комментарии чтобы понять, что происходит
+```
+```python
+# Не нужны комментарии, чтобы понять, что происходит
 df.set_index('date')
 df = df - 100
 ```
@@ -204,10 +211,12 @@ def mae(y_true, predictions):
     y_true = np.array(y_true)
     predictions = np.array(predictions)
     return np.mean(np.abs(y_true - predictions)) 
-
+```
+```python
 # Хорошо
 from sklearn.metrics import mean_absolute_error
 ```
+Еще пример
 ```python
 # Плохо
 from keras import backend as K
@@ -215,17 +224,20 @@ def coeff_determination(y_true, y_pred):
     SS_res =  K.sum(K.square( y_true-y_pred ))
     SS_tot = K.sum(K.square( y_true - K.mean(y_true) ) )
     return ( 1 - SS_res/(SS_tot + K.epsilon()) )
-
+```
+```python
 # Хорошо
 from sklearn.metrics import r2_score
 ```
+Еще пример
 ```python
 # Плохо (если вам, конечно, не нужно именно это)
 X_train = X.iloc[:80]
 X_test = X.iloc[80:]
 y_train = y.iloc[:80]
 y_test = y.iloc[80:]
-
+```
+```python
 # Хорошо
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(
@@ -238,12 +250,14 @@ X_train, X_test, y_train, y_test = train_test_split(
 # Плохо
 X = df.iloc[:, :2859]
 y = df.iloc[:, 2859:]
-
+```
+```python
 # Хорошо
 COLUMN_SPLIT = 2859
 X = df.iloc[:, :COLUMN_SPLIT]
 y = df.iloc[:, COLUMN_SPLIT:]
-
+```
+```python
 # Хорошо
 target_columns = ['pH', 'Cu', 'Ni']
 X = df.drop(target_columns, axis=1)
